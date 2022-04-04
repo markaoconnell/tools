@@ -32,9 +32,13 @@ for row_num, row in enumerate(exploded_lines):
         start_across_word = False
         if col != " ":
             if (row_num == 0) or (len(exploded_lines[row_num - 1]) <= col_num) or (exploded_lines[row_num - 1][col_num] == " "):
-                start_down_word = True
+                # Make sure that there is something below where we are
+                if ((row_num + 1) < len(exploded_lines)) and (exploded_lines[row_num + 1][col_num] != " "):
+                    start_down_word = True
             if (col_num == 0) or (row[col_num - 1] == " "):
-                start_across_word = True
+                # Make sure that this is really the beginning of the word - make sure that there is a letter following
+                if ((col_num + 1) < len(row)) and (row[col_num + 1] != " "):
+                    start_across_word = True
 
             if start_down_word or start_across_word:
                 blank_table += f"<td {square_style}>{super_start}{next_clue}{super_end}</td>"
